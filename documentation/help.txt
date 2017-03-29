@@ -1,0 +1,56 @@
+add_manual_data
+        Add data manually, via user input.
+        Each piece of data will be prompted.
+        Syntax: add_manual_data
+
+show_data
+        Prints current held data.
+        Syntax: show_data
+
+pull_data
+        Adds data from a chosen source.
+        If excel, must contain data in a sheet labelled 'input'
+        Syntax: pull_data [-d|-e]
+        [-d] Pulls from chosen database
+        [-e] Pulls from chosen excel spreadsheet
+
+push_data
+        Sends data to a chosen source.
+        Syntax: push_data [-d|-e}
+        [-d] Saves to chosen database
+        [-e] Saves to chosen excel spreadsheet
+
+validate
+        Validates current data, removing any data that is invalid.
+        Syntax: validate
+
+change_data_source
+        Changes the source file to save to or load from.
+        Syntax: change_data_source [-d|-e] <filename.xlsx>
+        [-d] changes database name (requires extension)
+        [-e] changes excel file name (requires extension)
+
+show_data_source
+        Shows the source files to save to and load from.
+        Syntax: show_data_source
+
+save_pickle
+        Saves current data inside a pickle. (no extension required)
+        Syntax: save_pickle <pickle_name>
+
+load_pickle
+        Loads given pickle into current data. (no extension required)
+        This is a replacement, not additional.
+        Syntax: load_pickle <pickle_name>
+
+graph_sales
+        Graphs the relationship between sales and salary per employee
+        Syntax: graph_sales
+
+clear
+        Clears current held data
+        Syntax: clear
+
+quit
+        Quits program
+        Syntax: quit
