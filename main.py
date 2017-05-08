@@ -40,12 +40,10 @@ class MainFlow(cmd.Cmd):
         Prints current held data.
         Syntax: show_data
         """
-        if len(line) > 0:
-            ic.log.output("Incorrect syntax." + str(self.do_show_data.__doc__))
-            return 1
-        else:
+        show_data_flag = self.valid_flag(line, [], 0, self.do_show_data.__doc__)
+        if show_data_flag == 0:
             ic.show_console_data()
-            return 0
+        return show_data_flag
 
     def do_pull_data(self, line):
         """
@@ -66,13 +64,13 @@ class MainFlow(cmd.Cmd):
             pull_file = self.excel_file
         try:
             ic.get_data(pull_file, view)
-            return 0
         except FileNotFoundError:
             ic.log.output("File does not exist... Please use 'change_data_source [-d|-e]' to edit data source.")
             return 3
         except KeyError:
             ic.log.output("File exists, but there is no worksheet labelled 'input'.")
             return 4
+        return 0
 
     def do_push_data(self, line):
         """
@@ -236,7 +234,9 @@ class MainFlow(cmd.Cmd):
         if len(args) != expected_arg_num:
             ic.log.output("Incorrect syntax. " + error_string)
             return 1
-        if args[0] in expected_flags:
+        if args == expected_flags:
+            return 0
+        elif args[0] in expected_flags:
             return args[0]
         else:
             ic.log.output("Invalid flag. " + error_string)
