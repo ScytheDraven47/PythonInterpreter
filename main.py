@@ -96,13 +96,11 @@ class MainFlow(cmd.Cmd):
         Validates current data, removing any data that is invalid.
         Syntax: validate
         """
-        if len(line) == 0:
+        validate_flag = self.valid_flag(line, [], 0, self.do_validate.__doc__)
+        if validate_flag == 0:
             count = ic.check()
             ic.log.output(str(count) + " counts of invalid data found.")
-            return 0
-        else:
-            ic.log.output("Incorrect syntax." + str(self.do_validate.__doc__))
-            return 1
+        return validate_flag
 
     def do_change_data_source(self, line):
         """
