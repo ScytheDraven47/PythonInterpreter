@@ -205,12 +205,11 @@ class MainFlow(cmd.Cmd):
         Quits program
         Syntax: quit
         """
-        if len(line) > 0:
-            ic.log.output("Incorrect syntax." + str(self.do_quit.__doc__))
-            return 1
-        else:
+        quit_flag = self.valid_flag(line, [], 0, self.do_graph_sales.__doc__)
+        if quit_flag == 0:
             print("Quitting...")
             raise SystemExit
+        return quit_flag
 
     @staticmethod
     def valid_flag(line, expected_flags, expected_arg_num, error_string):
