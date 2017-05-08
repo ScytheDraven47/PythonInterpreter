@@ -113,18 +113,13 @@ class MainFlow(cmd.Cmd):
         if type(cds_flag) == int:
             return cds_flag
         filename = line.split()[1]
-        if cds_flag == "-d":
-            if filename.endswith(".db"):
-                self.database_name = filename
-            else:
-                ic.log.output("Incorrect file, please use .xlsx or .db")
-                return 5
+        if cds_flag == "-d" and filename.endswith(".db"):
+            self.database_name = filename
+        elif cds_flag == "-e" and filename.endswith(".xlsx"):
+            self.excel_file = filename
         else:
-            if filename.endswith(".xlsx"):
-                self.excel_file = filename
-            else:
-                ic.log.output("Incorrect file, please use .xlsx or .db")
-                return 5
+            ic.log.output("Incorrect file, please use .xlsx or .db")
+            return 5
         return 0
 
     def do_show_data_source(self, line):
