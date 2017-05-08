@@ -144,10 +144,10 @@ class MainFlow(cmd.Cmd):
         if len(args) == 1:
             with open(args[0]+".pickle", 'wb') as f:
                 pickle.dump(ic.all_data, f)
-            return 0
         else:
             ic.log.output("Incorrect syntax." + str(self.do_save_pickle.__doc__))
             return 1
+        return 0
 
     def do_load_pickle(self, line):
         """
@@ -161,13 +161,13 @@ class MainFlow(cmd.Cmd):
             try:
                 with open(args[0]+".pickle", 'rb') as f:
                     ic.all_data = pickle.load(f)
-                return 0
             except FileNotFoundError:
                 ic.log.output("Pickle doesn't exist... Please type the name of an existing pickle")
                 return 3
         else:
             ic.log.output("Incorrect syntax." + str(self.do_save_pickle.__doc__))
             return 1
+        return 0
 
     def do_graph_sales(self, line):
         """
