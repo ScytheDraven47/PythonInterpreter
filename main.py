@@ -195,12 +195,10 @@ class MainFlow(cmd.Cmd):
         Clears current held data
         Syntax: clear
         """
-        if len(line) > 0:
-            ic.log.output("Incorrect syntax." + str(self.do_clear.__doc__))
-            return 1
-        else:
+        clear_flag = self.valid_flag(line, [], 0, self.do_graph_sales.__doc__)
+        if clear_flag == 0:
             ic.all_data = []
-            return 0
+        return clear_flag
 
     def do_quit(self, line):
         """
