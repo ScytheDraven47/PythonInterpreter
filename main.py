@@ -86,22 +86,17 @@ class MainFlow(cmd.Cmd):
         [-d] Saves to chosen database
         [-e] Saves to chosen excel spreadsheet
         """
-        args = line.split()
-        if len(args) == 1:
-            if args[0] == "-d":
-                view = DatabaseView()
-                push_file = self.database_name
-            elif args[0] == "-e":
-                view = ExcelView()
-                push_file = self.excel_file
-            else:
-                ic.log.output("Incorrect flag." + str(self.do_push_data.__doc__))
-                return 2
-            ic.save_data(push_file, view)
-            return 0
+        flag = self.valid_flag(line, ["-d", "-e"], 1, self.do_push_data.__doc__)
+        if type(flag) is int:
+            return flag
+        elif flag == "-d":
+            view = DatabaseView()
+            push_file = self.database_name
         else:
-            ic.log.output("Incorrect syntax." + str(self.do_push_data.__doc__))
-            return 1
+            view = ExcelView()
+            push_file = self.excel_file
+        ic.save_data(push_file, view)
+        return 0
 
     def do_validate(self, line):
         """
@@ -239,6 +234,18 @@ class MainFlow(cmd.Cmd):
         else:
             print("Quitting...")
             raise SystemExit
+
+    @staticmethod
+    def valid_flag(line, expected_flags, expected_arg_num, error_string):
+        args = line.split()
+        if len(args) != expected_arg_num:
+            ic.log.output("Incorrect syntax. " + error_string)
+            return 1
+        if args[0] in expected_flags:
+            return args[0]
+        else:
+            ic.log.output("Invalid flag. " + error_string)
+            return 2
 
     # Start of Interpreter CMD
     def start(self):
