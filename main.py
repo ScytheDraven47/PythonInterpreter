@@ -174,7 +174,8 @@ class MainFlow(cmd.Cmd):
         Graphs the relationship between sales and salary per employee
         Syntax: graph_sales
         """
-        if len(line) == 0:
+        graph_flag = self.valid_flag(line, [], 0, self.do_graph_sales.__doc__)
+        if graph_flag == 0:
             sales = []
             salary = []
             for data in ic.all_data:
@@ -187,10 +188,7 @@ class MainFlow(cmd.Cmd):
             plt.ylabel("Salary (in $1000's)")
             plt.title("Sales by salary per employee")
             # plt.show()
-            return 0
-        else:
-            ic.log.output("Invalid syntax." + str(self.do_graph_sales.__doc__))
-            return 1
+        return graph_flag
 
     def do_clear(self, line):
         """
