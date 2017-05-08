@@ -127,14 +127,12 @@ class MainFlow(cmd.Cmd):
         Shows the source files to save to and load from.
         Syntax: show_data_source
         """
-        if len(line) > 0:
-            ic.log.output("Incorrect syntax." + str(self.do_show_data_source.__doc__))
-            return 1
-        else:
+        sds_flag = self.valid_flag(line, [], 0, self.do_show_data_source.__doc__)
+        if sds_flag == 0:
             ic.log.output("Current settings are:\n"
                           "Database Name: " + self.database_name + "\n"
                           "Excel Name: " + self.excel_file + "\n")
-            return 0
+        return sds_flag
 
     def do_save_pickle(self, line):
         """
