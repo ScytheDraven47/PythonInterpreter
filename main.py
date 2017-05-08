@@ -22,18 +22,18 @@ class MainFlow(cmd.Cmd):
     database_name = "data_src/db_test.db"
     prompt = "Interpreter >>>"
 
-    def do_add_manual_data(self, line):
-        """
-        Add data manually, via user input.
-        Each piece of data will be prompted.
-        Syntax: add_manual_data
-        """
-        if len(line) > 0:
-            ic.log.output("Incorrect syntax." + str(self.do_add_manual_data.__doc__))
-        try:
-            ic.get_manual_data()
-        except Exception as err:
-            ic.log.output(err)
+    # def do_add_manual_data(self, line):
+    #     """
+    #     Add data manually, via user input.
+    #     Each piece of data will be prompted.
+    #     Syntax: add_manual_data
+    #     """
+    #     if len(line) > 0:
+    #         ic.log.output("Incorrect syntax." + str(self.do_add_manual_data.__doc__))
+    #     try:
+    #         ic.get_manual_data()
+    #     except Exception as err:
+    #         ic.log.output(err)
 
     def do_show_data(self, line):
         """
@@ -42,12 +42,10 @@ class MainFlow(cmd.Cmd):
         """
         if len(line) > 0:
             ic.log.output("Incorrect syntax." + str(self.do_show_data.__doc__))
-        try:
+            return 1
+        else:
             ic.show_console_data()
-        except IndexError:
-            ic.log.output("There is no data selected... Use 'pull_data' to get data from data source.")
-        except Exception as err:
-            ic.log.output(err)
+            return 0
 
     def do_pull_data(self, line):
         """
@@ -61,25 +59,25 @@ class MainFlow(cmd.Cmd):
         if len(args) == 1:
             if args[0] == "-d":
                 view = DatabaseView()
-                file = self.database_name
+                pull_file = self.database_name
             elif args[0] == "-e":
                 view = ExcelView()
-                file = self.excel_file
+                pull_file = self.excel_file
             else:
                 ic.log.output("Incorrect flag. Only '-d' or '-e' are valid. ")
-                view = None
-                file = None
-            if view is not None:
-                try:
-                    ic.get_data(file, view)
-                except FileNotFoundError:
-                    ic.log.output("File does not exist... Please use 'change_data_source [-d|-e]' to edit data source.")
-                except KeyError:
-                    ic.log.output("File exists, but there is no worksheet labelled 'input'.")
-                except Exception as err:
-                    ic.log.output(err)
+                return 2
+            try:
+                ic.get_data(pull_file, view)
+                return 0
+            except FileNotFoundError:
+                ic.log.output("File does not exist... Please use 'change_data_source [-d|-e]' to edit data source.")
+                return 3
+            except KeyError:
+                ic.log.output("File exists, but there is no worksheet labelled 'input'.")
+                return 4
         else:
             ic.log.output("Incorrect syntax." + str(self.do_pull_data.__doc__))
+            return 1
 
     def do_push_data(self, line):
         """
@@ -92,19 +90,18 @@ class MainFlow(cmd.Cmd):
         if len(args) == 1:
             if args[0] == "-d":
                 view = DatabaseView()
-                file = self.database_name
+                push_file = self.database_name
             elif args[0] == "-e":
                 view = ExcelView()
-                file = self.excel_file
+                push_file = self.excel_file
             else:
                 ic.log.output("Incorrect flag." + str(self.do_push_data.__doc__))
-                view = None
-                file = None
-            if view is not None:
-                try:
-                    ic.save_data(file, view)
-                except Exception as err:
-                    ic.log.output(err)
+                return 2
+            ic.save_data(push_file, view)
+            return 0
+        else:
+            ic.log.output("Incorrect syntax." + str(self.do_push_data.__doc__))
+            return 1
 
     def do_validate(self, line):
         """
@@ -112,13 +109,12 @@ class MainFlow(cmd.Cmd):
         Syntax: validate
         """
         if len(line) == 0:
-            try:
-                count = ic.check()
-                ic.log.output(str(count) + " counts of invalid data found.")
-            except Exception as err:
-                ic.log.output(err)
+            count = ic.check()
+            ic.log.output(str(count) + " counts of invalid data found.")
+            return 0
         else:
             ic.log.output("Incorrect syntax." + str(self.do_validate.__doc__))
+            return 1
 
     def do_change_data_source(self, line):
         """
@@ -129,19 +125,24 @@ class MainFlow(cmd.Cmd):
         """
         args = line.split()
         if len(args) == 2:
-            flag = args[0]
+            cds_flag = args[0]
             filename = args[1]
             if filename.endswith(".xlsx") or filename.endswith(".db"):
-                if flag == "-d":
+                if cds_flag == "-d":
                     self.database_name = filename
-                elif flag == "-e":
+                    return 0
+                elif cds_flag == "-e":
                     self.excel_file = filename
+                    return 0
                 else:
                     ic.log.output("Invalid flag, only '-d' or '-e' are valid.")
+                    return 2
             else:
                 ic.log.output("Incorrect file, please use .xlsx or .db")
+                return 5
         else:
             ic.log.output("Incorrect syntax." + str(self.do_change_data_source.__doc__))
+            return 1
 
     def do_show_data_source(self, line):
         """
@@ -150,10 +151,12 @@ class MainFlow(cmd.Cmd):
         """
         if len(line) > 0:
             ic.log.output("Incorrect syntax." + str(self.do_show_data_source.__doc__))
+            return 1
         else:
             ic.log.output("Current settings are:\n"
                           "Database Name: " + self.database_name + "\n"
                           "Excel Name: " + self.excel_file + "\n")
+            return 0
 
     def do_save_pickle(self, line):
         """
@@ -163,13 +166,12 @@ class MainFlow(cmd.Cmd):
         import pickle
         args = line.split()
         if len(args) == 1:
-            try:
-                with open(args[0]+".pickle", 'wb') as f:
-                    pickle.dump(ic.all_data, f)
-            except Exception as err:
-                ic.log.output(err)
+            with open(args[0]+".pickle", 'wb') as f:
+                pickle.dump(ic.all_data, f)
+            return 0
         else:
             ic.log.output("Incorrect syntax." + str(self.do_save_pickle.__doc__))
+            return 1
 
     def do_load_pickle(self, line):
         """
@@ -183,10 +185,13 @@ class MainFlow(cmd.Cmd):
             try:
                 with open(args[0]+".pickle", 'rb') as f:
                     ic.all_data = pickle.load(f)
-            except Exception as err:
-                ic.log.output(err)
+                return 0
+            except FileNotFoundError:
+                ic.log.output("Pickle doesn't exist... Please type the name of an existing pickle")
+                return 3
         else:
             ic.log.output("Incorrect syntax." + str(self.do_save_pickle.__doc__))
+            return 1
 
     def do_graph_sales(self, line):
         """
@@ -199,16 +204,17 @@ class MainFlow(cmd.Cmd):
             for data in ic.all_data:
                 sales.append(data['sales'])
                 salary.append(data['salary'])
-
             import matplotlib.pyplot as plt
             plt.plot(sales, salary, 'bo')
             plt.axis([0, 999, 0, 999])
             plt.xlabel("# of Sales")
             plt.ylabel("Salary (in $1000's)")
             plt.title("Sales by salary per employee")
-            plt.show()
+            # plt.show()
+            return 0
         else:
             ic.log.output("Invalid syntax." + str(self.do_graph_sales.__doc__))
+            return 1
 
     def do_clear(self, line):
         """
@@ -217,8 +223,10 @@ class MainFlow(cmd.Cmd):
         """
         if len(line) > 0:
             ic.log.output("Incorrect syntax." + str(self.do_clear.__doc__))
+            return 1
         else:
             ic.all_data = []
+            return 0
 
     def do_quit(self, line):
         """
@@ -227,6 +235,7 @@ class MainFlow(cmd.Cmd):
         """
         if len(line) > 0:
             ic.log.output("Incorrect syntax." + str(self.do_quit.__doc__))
+            return 1
         else:
             print("Quitting...")
             raise SystemExit
@@ -239,6 +248,7 @@ class MainFlow(cmd.Cmd):
                       "Database Name: " + self.database_name + "\n"
                       "Excel File: " + self.excel_file + "\n"
                       "Starting...\n")
+        return 0
 
 if __name__ == "__main__":
     m = MainFlow()

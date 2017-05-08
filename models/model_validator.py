@@ -4,6 +4,7 @@
 # Validation file for Interpreter project
 
 import re
+import doctest
 from datetime import datetime
 
 
@@ -182,5 +183,4 @@ class Validate:
         return checklist
 
 if __name__ == '__main__':
-    import doctest
     doctest.testmod()

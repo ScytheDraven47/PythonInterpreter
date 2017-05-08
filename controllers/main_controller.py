@@ -14,17 +14,17 @@ class InterpreterController:
         self.all_data = []
         self.log = ConsoleView()
 
-    def get_manual_data(self):
-        input_data = {
-            'emp_id': self.log.get_data("What is your employee ID? (A001)"),
-            'gender': self.log.get_data("What is your gender? (M/F)"),
-            'age': int(self.log.get_data("What is your age? (16-99)")),
-            'sales': int(self.log.get_data("What is your total sales? (01-999)")),
-            'bmi': self.log.get_data("What is your BMI? (Normal/Overweight/Obese/Underweight)"),
-            'salary': int(self.log.get_data("What is your salary in thousands? (01-999)")),
-            'birthday': self.log.get_data("What is your birthday? (DD-MM-YYYY)"),
-        }
-        self.all_data.append(input_data)
+    # def get_manual_data(self):
+    #     input_data = {
+    #         'emp_id': self.log.get_data("What is your employee ID? (A001)"),
+    #         'gender': self.log.get_data("What is your gender? (M/F)"),
+    #         'age': int(self.log.get_data("What is your age? (16-99)")),
+    #         'sales': int(self.log.get_data("What is your total sales? (01-999)")),
+    #         'bmi': self.log.get_data("What is your BMI? (Normal/Overweight/Obese/Underweight)"),
+    #         'salary': int(self.log.get_data("What is your salary in thousands? (01-999)")),
+    #         'birthday': self.log.get_data("What is your birthday? (DD-MM-YYYY)"),
+    #     }
+    #     self.all_data.append(input_data)
 
     def show_console_data(self):
         self.log.output(self.to_string(self.all_data))
