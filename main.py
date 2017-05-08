@@ -54,14 +54,14 @@ class MainFlow(cmd.Cmd):
         [-e] Pulls from chosen excel spreadsheet
         """
         pull_flag = self.valid_flag(line, ["-d", "-e"], 1, self.do_pull_data.__doc__)
-        if type(pull_flag) is int:
-            return pull_flag
-        elif pull_flag == "-d":
+        if pull_flag == "-d":
             view = DatabaseView()
             pull_file = self.database_name
-        else:
+        elif pull_flag == "-e":
             view = ExcelView()
             pull_file = self.excel_file
+        else:
+            return pull_flag
         try:
             ic.get_data(pull_file, view)
         except FileNotFoundError:
@@ -80,14 +80,14 @@ class MainFlow(cmd.Cmd):
         [-e] Saves to chosen excel spreadsheet
         """
         push_flag = self.valid_flag(line, ["-d", "-e"], 1, self.do_push_data.__doc__)
-        if type(push_flag) is int:
-            return push_flag
-        elif push_flag == "-d":
+        if push_flag == "-d":
             view = DatabaseView()
             push_file = self.database_name
-        else:
+        elif push_flag == "-e":
             view = ExcelView()
             push_file = self.excel_file
+        else:
+            return push_flag
         ic.save_data(push_file, view)
         return 0
 
@@ -109,26 +109,23 @@ class MainFlow(cmd.Cmd):
         [-d] changes database name (requires extension)
         [-e] changes excel file name (requires extension)
         """
-        args = line.split()
-        if len(args) == 2:
-            cds_flag = args[0]
-            filename = args[1]
-            if filename.endswith(".xlsx") or filename.endswith(".db"):
-                if cds_flag == "-d":
-                    self.database_name = filename
-                    return 0
-                elif cds_flag == "-e":
-                    self.excel_file = filename
-                    return 0
-                else:
-                    ic.log.output("Invalid flag, only '-d' or '-e' are valid.")
-                    return 2
+        cds_flag = self.valid_flag(line, ["-d", "-e"], 2, self.do_change_data_source.__doc__)
+        if type(cds_flag) == int:
+            return cds_flag
+        filename = line.split()[1]
+        if cds_flag == "-d":
+            if filename.endswith(".db"):
+                self.database_name = filename
             else:
                 ic.log.output("Incorrect file, please use .xlsx or .db")
                 return 5
         else:
-            ic.log.output("Incorrect syntax." + str(self.do_change_data_source.__doc__))
-            return 1
+            if filename.endswith(".xlsx"):
+                self.excel_file = filename
+            else:
+                ic.log.output("Incorrect file, please use .xlsx or .db")
+                return 5
+        return 0
 
     def do_show_data_source(self, line):
         """
