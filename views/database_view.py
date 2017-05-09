@@ -39,9 +39,7 @@ class DatabaseView(IView):
         self.create_db(c)
         for row_data in message:
             self.fill_db(db, row_data)
-        db.commit()
-        db.close()
-        self.has_closed_db = True
+        self.close_db(db, True)
 
     def connect_to_db(self, db_name):
         db = _sqlite3.connect(db_name)
@@ -74,3 +72,9 @@ class DatabaseView(IView):
             self.has_filled_db = True
         except Exception as err:
             print(err)
+
+    def close_db(self, db, has_made_changes):
+        if has_made_changes:
+            db.commit()
+        db.close()
+        self.has_closed_db = True
