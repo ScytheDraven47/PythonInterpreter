@@ -6,10 +6,10 @@
 from openpyxl import Workbook
 from openpyxl import load_workbook
 
-from views.view import IView
+from views.file_view import FileView
 
 
-class ExcelView(IView):
+class ExcelView(FileView):
 
     def __init__(self):
         self.has_loaded_excel = False
@@ -18,9 +18,9 @@ class ExcelView(IView):
         self.has_filled_excel = False
         self.has_saved_excel = False
 
-    def get_data(self, excel_file):
+    def get_data(self, filename):
         """Gets a single row of data from the excel file, returns the data as an array"""
-        wb = load_workbook(filename=excel_file)
+        wb = load_workbook(filename=filename)
         self.has_loaded_excel = True
         ws = wb['input']
         starting_col = 1
@@ -33,10 +33,10 @@ class ExcelView(IView):
         self.has_received_data_from_excel = True
         return all_data
 
-    def output(self, message, excel_file):
+    def output(self, data_to_output, filename):
         """Loads the excel file, saves data(message) into the first empty row, saves file"""
         try:
-            wb = load_workbook(excel_file)
+            wb = load_workbook(filename)
             ws = wb['output']
             self.has_loaded_excel = True
         except FileNotFoundError:
@@ -48,11 +48,11 @@ class ExcelView(IView):
         while ws['A'+str(row)].value is not None:
             row += 1
         col = 1
-        for row_data in message:
+        for row_data in data_to_output:
             for value in row_data.values():
                 ws.cell(row=row, column=col).value = value
                 col += 1
             row += 1
             self.has_filled_excel = True
-        wb.save(excel_file)
+        wb.save(filename)
         self.has_saved_excel = True
