@@ -163,23 +163,13 @@ class Validate:
         :param input_data: list
         :return: list
         """
-        checklist = {}
-        for key in input_data:
-            data = input_data[key]
-            if key == 'emp_id':
-                checklist['emp_id'] = self.validate_emp_id(data)
-            elif key == 'gender':
-                checklist['gender'] = self.validate_gender(data)
-            elif key == 'age':
-                checklist['age'] = self.validate_age(data)
-            elif key == 'sales':
-                checklist['sales'] = self.validate_sales(data)
-            elif key == 'bmi':
-                checklist['bmi'] = self.validate_bmi(data)
-            elif key == 'salary':
-                checklist['salary'] = self.validate_salary(data)
-            elif key == 'birthday':
-                checklist['birthday'] = self.validate_birthday(data)
+        checklist = {'emp_id': self.validate_emp_id(input_data['emp_id']),
+                     'gender': self.validate_gender(input_data['gender']),
+                     'age': self.validate_age(input_data['age']),
+                     'sales': self.validate_sales(input_data['sales']),
+                     'bmi': self.validate_bmi(input_data['bmi']),
+                     'salary': self.validate_salary(input_data['salary']),
+                     'birthday': self.validate_birthday(input_data['birthday'])}
         return checklist
 
 if __name__ == '__main__':
