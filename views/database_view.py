@@ -38,20 +38,7 @@ class DatabaseView(IView):
         c = db.cursor()
         self.create_db(c)
         for row_data in message:
-            print(row_data)
-            try:
-                db.execute('''INSERT INTO Employee (emp_id, gender, age, sales, bmi, salary, birthday)
-                            VALUES(?,?,?,?,?,?,?)''',
-                           (row_data['emp_id'],
-                            row_data['gender'],
-                            row_data['age'],
-                            row_data['sales'],
-                            row_data['bmi'],
-                            row_data['salary'],
-                            str(row_data['birthday'])))
-                self.has_filled_db = True
-            except Exception as err:
-                print(err)
+            self.fill_db(db, row_data)
         db.commit()
         db.close()
         self.has_closed_db = True
@@ -72,3 +59,18 @@ class DatabaseView(IView):
                     birthday    DATETIME
                 )''')
         self.has_created_db_if_did_not_exist = True
+
+    def fill_db(self, db, data):
+        try:
+            db.execute('''INSERT INTO Employee (emp_id, gender, age, sales, bmi, salary, birthday)
+                        VALUES(?,?,?,?,?,?,?)''',
+                       (data['emp_id'],
+                        data['gender'],
+                        data['age'],
+                        data['sales'],
+                        data['bmi'],
+                        data['salary'],
+                        str(data['birthday'])))
+            self.has_filled_db = True
+        except Exception as err:
+            print(err)
