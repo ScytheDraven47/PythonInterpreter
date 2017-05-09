@@ -4,11 +4,10 @@
 # ExcelView for Interpreter Program
 
 import _sqlite3
-# from view import IView
-from views.view import IView
+from views.file_view import FileView
 
 
-class DatabaseView(IView):
+class DatabaseView(FileView):
 
     def __init__(self):
         self.has_connected_to_db = False
@@ -17,11 +16,11 @@ class DatabaseView(IView):
         self.has_filled_db = False
         self.has_closed_db = False
 
-    def get_data(self, db_name):
+    def get_data(self, filename):
         """Gets a single row of data from the excel file, returns the data as an array"""
         import os
-        if os.path.exists(db_name):
-            db = self.connect_to_db(db_name)
+        if os.path.exists(filename):
+            db = self.connect_to_db(filename)
         else:
             raise FileNotFoundError
         c = db.cursor()
@@ -31,12 +30,12 @@ class DatabaseView(IView):
         self.close_db(db, False)
         return all_data
 
-    def output(self, message, db_name):
+    def output(self, data_to_output, filename):
         """Loads the excel file, saves data(message) into the first empty row, saves file"""
-        db = self.connect_to_db(db_name)
+        db = self.connect_to_db(filename)
         c = db.cursor()
         self.create_db(c)
-        for row_data in message:
+        for row_data in data_to_output:
             self.fill_db(db, row_data)
         self.close_db(db, True)
 
