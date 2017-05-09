@@ -21,10 +21,9 @@ class DatabaseView(IView):
         """Gets a single row of data from the excel file, returns the data as an array"""
         import os
         if os.path.exists(db_name):
-            db = _sqlite3.connect(db_name)
+            db = self.connect_to_db(db_name)
         else:
             raise FileNotFoundError
-        self.has_connected_to_db = True
         c = db.cursor()
         data = c.execute('''SELECT * FROM Employee''')
         self.has_selected_data_from_db = True
