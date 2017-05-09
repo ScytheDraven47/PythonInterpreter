@@ -138,10 +138,10 @@
 <p id="t6" class="stm run hide_run"><span class="key">from</span> <span class="nam">openpyxl</span> <span class="key">import</span> <span class="nam">Workbook</span><span class="strut">&nbsp;</span></p>
 <p id="t7" class="stm run hide_run"><span class="key">from</span> <span class="nam">openpyxl</span> <span class="key">import</span> <span class="nam">load_workbook</span><span class="strut">&nbsp;</span></p>
 <p id="t8" class="pln"><span class="strut">&nbsp;</span></p>
-<p id="t9" class="stm run hide_run"><span class="key">from</span> <span class="nam">views</span><span class="op">.</span><span class="nam">view</span> <span class="key">import</span> <span class="nam">IView</span><span class="strut">&nbsp;</span></p>
+<p id="t9" class="stm run hide_run"><span class="key">from</span> <span class="nam">views</span><span class="op">.</span><span class="nam">file_view</span> <span class="key">import</span> <span class="nam">FileView</span><span class="strut">&nbsp;</span></p>
 <p id="t10" class="pln"><span class="strut">&nbsp;</span></p>
 <p id="t11" class="pln"><span class="strut">&nbsp;</span></p>
-<p id="t12" class="stm run hide_run"><span class="key">class</span> <span class="nam">ExcelView</span><span class="op">(</span><span class="nam">IView</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t12" class="stm run hide_run"><span class="key">class</span> <span class="nam">ExcelView</span><span class="op">(</span><span class="nam">FileView</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
 <p id="t13" class="pln"><span class="strut">&nbsp;</span></p>
 <p id="t14" class="stm run hide_run">    <span class="key">def</span> <span class="nam">__init__</span><span class="op">(</span><span class="nam">self</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
 <p id="t15" class="stm run hide_run">        <span class="nam">self</span><span class="op">.</span><span class="nam">has_loaded_excel</span> <span class="op">=</span> <span class="key">False</span><span class="strut">&nbsp;</span></p>
@@ -150,9 +150,9 @@
 <p id="t18" class="stm run hide_run">        <span class="nam">self</span><span class="op">.</span><span class="nam">has_filled_excel</span> <span class="op">=</span> <span class="key">False</span><span class="strut">&nbsp;</span></p>
 <p id="t19" class="stm run hide_run">        <span class="nam">self</span><span class="op">.</span><span class="nam">has_saved_excel</span> <span class="op">=</span> <span class="key">False</span><span class="strut">&nbsp;</span></p>
 <p id="t20" class="pln"><span class="strut">&nbsp;</span></p>
-<p id="t21" class="stm run hide_run">    <span class="key">def</span> <span class="nam">get_data</span><span class="op">(</span><span class="nam">self</span><span class="op">,</span> <span class="nam">excel_file</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t21" class="stm run hide_run">    <span class="key">def</span> <span class="nam">get_data</span><span class="op">(</span><span class="nam">self</span><span class="op">,</span> <span class="nam">filename</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
 <p id="t22" class="pln">        <span class="str">"""Gets a single row of data from the excel file, returns the data as an array"""</span><span class="strut">&nbsp;</span></p>
-<p id="t23" class="stm run hide_run">        <span class="nam">wb</span> <span class="op">=</span> <span class="nam">load_workbook</span><span class="op">(</span><span class="nam">filename</span><span class="op">=</span><span class="nam">excel_file</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t23" class="stm run hide_run">        <span class="nam">wb</span> <span class="op">=</span> <span class="nam">load_workbook</span><span class="op">(</span><span class="nam">filename</span><span class="op">=</span><span class="nam">filename</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 <p id="t24" class="stm run hide_run">        <span class="nam">self</span><span class="op">.</span><span class="nam">has_loaded_excel</span> <span class="op">=</span> <span class="key">True</span><span class="strut">&nbsp;</span></p>
 <p id="t25" class="stm run hide_run">        <span class="nam">ws</span> <span class="op">=</span> <span class="nam">wb</span><span class="op">[</span><span class="str">'input'</span><span class="op">]</span><span class="strut">&nbsp;</span></p>
 <p id="t26" class="stm run hide_run">        <span class="nam">starting_col</span> <span class="op">=</span> <span class="num">1</span><span class="strut">&nbsp;</span></p>
@@ -165,10 +165,10 @@
 <p id="t33" class="stm run hide_run">        <span class="nam">self</span><span class="op">.</span><span class="nam">has_received_data_from_excel</span> <span class="op">=</span> <span class="key">True</span><span class="strut">&nbsp;</span></p>
 <p id="t34" class="stm run hide_run">        <span class="key">return</span> <span class="nam">all_data</span><span class="strut">&nbsp;</span></p>
 <p id="t35" class="pln"><span class="strut">&nbsp;</span></p>
-<p id="t36" class="stm run hide_run">    <span class="key">def</span> <span class="nam">output</span><span class="op">(</span><span class="nam">self</span><span class="op">,</span> <span class="nam">message</span><span class="op">,</span> <span class="nam">excel_file</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t36" class="stm run hide_run">    <span class="key">def</span> <span class="nam">output</span><span class="op">(</span><span class="nam">self</span><span class="op">,</span> <span class="nam">data_to_output</span><span class="op">,</span> <span class="nam">filename</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
 <p id="t37" class="pln">        <span class="str">"""Loads the excel file, saves data(message) into the first empty row, saves file"""</span><span class="strut">&nbsp;</span></p>
 <p id="t38" class="stm run hide_run">        <span class="key">try</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
-<p id="t39" class="stm run hide_run">            <span class="nam">wb</span> <span class="op">=</span> <span class="nam">load_workbook</span><span class="op">(</span><span class="nam">excel_file</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t39" class="stm run hide_run">            <span class="nam">wb</span> <span class="op">=</span> <span class="nam">load_workbook</span><span class="op">(</span><span class="nam">filename</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 <p id="t40" class="stm run hide_run">            <span class="nam">ws</span> <span class="op">=</span> <span class="nam">wb</span><span class="op">[</span><span class="str">'output'</span><span class="op">]</span><span class="strut">&nbsp;</span></p>
 <p id="t41" class="stm run hide_run">            <span class="nam">self</span><span class="op">.</span><span class="nam">has_loaded_excel</span> <span class="op">=</span> <span class="key">True</span><span class="strut">&nbsp;</span></p>
 <p id="t42" class="stm run hide_run">        <span class="key">except</span> <span class="nam">FileNotFoundError</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
@@ -180,13 +180,13 @@
 <p id="t48" class="stm run hide_run">        <span class="key">while</span> <span class="nam">ws</span><span class="op">[</span><span class="str">'A'</span><span class="op">+</span><span class="nam">str</span><span class="op">(</span><span class="nam">row</span><span class="op">)</span><span class="op">]</span><span class="op">.</span><span class="nam">value</span> <span class="key">is</span> <span class="key">not</span> <span class="key">None</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
 <p id="t49" class="stm run hide_run">            <span class="nam">row</span> <span class="op">+=</span> <span class="num">1</span><span class="strut">&nbsp;</span></p>
 <p id="t50" class="stm run hide_run">        <span class="nam">col</span> <span class="op">=</span> <span class="num">1</span><span class="strut">&nbsp;</span></p>
-<p id="t51" class="stm run hide_run">        <span class="key">for</span> <span class="nam">row_data</span> <span class="key">in</span> <span class="nam">message</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t51" class="stm run hide_run">        <span class="key">for</span> <span class="nam">row_data</span> <span class="key">in</span> <span class="nam">data_to_output</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
 <p id="t52" class="stm run hide_run">            <span class="key">for</span> <span class="nam">value</span> <span class="key">in</span> <span class="nam">row_data</span><span class="op">.</span><span class="nam">values</span><span class="op">(</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
 <p id="t53" class="stm run hide_run">                <span class="nam">ws</span><span class="op">.</span><span class="nam">cell</span><span class="op">(</span><span class="nam">row</span><span class="op">=</span><span class="nam">row</span><span class="op">,</span> <span class="nam">column</span><span class="op">=</span><span class="nam">col</span><span class="op">)</span><span class="op">.</span><span class="nam">value</span> <span class="op">=</span> <span class="nam">value</span><span class="strut">&nbsp;</span></p>
 <p id="t54" class="stm run hide_run">                <span class="nam">col</span> <span class="op">+=</span> <span class="num">1</span><span class="strut">&nbsp;</span></p>
 <p id="t55" class="stm run hide_run">            <span class="nam">row</span> <span class="op">+=</span> <span class="num">1</span><span class="strut">&nbsp;</span></p>
 <p id="t56" class="stm run hide_run">            <span class="nam">self</span><span class="op">.</span><span class="nam">has_filled_excel</span> <span class="op">=</span> <span class="key">True</span><span class="strut">&nbsp;</span></p>
-<p id="t57" class="stm run hide_run">        <span class="nam">wb</span><span class="op">.</span><span class="nam">save</span><span class="op">(</span><span class="nam">excel_file</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t57" class="stm run hide_run">        <span class="nam">wb</span><span class="op">.</span><span class="nam">save</span><span class="op">(</span><span class="nam">filename</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 <p id="t58" class="stm run hide_run">        <span class="nam">self</span><span class="op">.</span><span class="nam">has_saved_excel</span> <span class="op">=</span> <span class="key">True</span><span class="strut">&nbsp;</span></p>
 
             </td>
@@ -198,7 +198,7 @@
     <div class="content">
         <p>
             <a class="nav" href="index.html">&#xab; index</a> &nbsp; &nbsp; <a class="nav" href="https://coverage.readthedocs.io">coverage.py v4.3.4</a>,
-            created at 2017-05-08 09:38
+            created at 2017-05-09 22:49
         </p>
     </div>
 </div>
