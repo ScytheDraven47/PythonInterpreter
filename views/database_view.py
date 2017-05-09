@@ -28,8 +28,7 @@ class DatabaseView(IView):
         data = c.execute('''SELECT * FROM Employee''')
         self.has_selected_data_from_db = True
         all_data = data.fetchall()
-        db.close()
-        self.has_closed_db = True
+        self.close_db(db, False)
         return all_data
 
     def output(self, message, db_name):
