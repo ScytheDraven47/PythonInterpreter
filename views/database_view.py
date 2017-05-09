@@ -36,16 +36,7 @@ class DatabaseView(IView):
         """Loads the excel file, saves data(message) into the first empty row, saves file"""
         db = self.connect_to_db(db_name)
         c = db.cursor()
-        c.execute('''CREATE TABLE IF NOT EXISTS Employee (
-            emp_id      VARCHAR(4) UNIQUE PRIMARY KEY,
-            gender      VARCHAR(1),
-            age         INT(2),
-            sales       INT(3),
-            bmi         VARCHAR(11),
-            salary      INT(3),
-            birthday    DATETIME
-        )''')
-        self.has_created_db_if_did_not_exist = True
+        self.create_db(c)
         for row_data in message:
             print(row_data)
             try:
@@ -70,3 +61,14 @@ class DatabaseView(IView):
         self.has_connected_to_db = True
         return db
 
+    def create_db(self, cursor):
+        cursor.execute('''CREATE TABLE IF NOT EXISTS Employee (
+                    emp_id      VARCHAR(4) UNIQUE PRIMARY KEY,
+                    gender      VARCHAR(1),
+                    age         INT(2),
+                    sales       INT(3),
+                    bmi         VARCHAR(11),
+                    salary      INT(3),
+                    birthday    DATETIME
+                )''')
+        self.has_created_db_if_did_not_exist = True
