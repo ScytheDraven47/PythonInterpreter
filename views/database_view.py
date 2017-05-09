@@ -35,7 +35,7 @@ class DatabaseView(IView):
 
     def output(self, message, db_name):
         """Loads the excel file, saves data(message) into the first empty row, saves file"""
-        db = _sqlite3.connect(db_name)
+        db = self.connect_to_db(db_name)
         c = db.cursor()
         c.execute('''CREATE TABLE IF NOT EXISTS Employee (
             emp_id      VARCHAR(4) UNIQUE PRIMARY KEY,
@@ -47,7 +47,6 @@ class DatabaseView(IView):
             birthday    DATETIME
         )''')
         self.has_created_db_if_did_not_exist = True
-        self.has_connected_to_db = True
         for row_data in message:
             print(row_data)
             try:
@@ -66,3 +65,9 @@ class DatabaseView(IView):
         db.commit()
         db.close()
         self.has_closed_db = True
+
+    def connect_to_db(self, db_name):
+        db = _sqlite3.connect(db_name)
+        self.has_connected_to_db = True
+        return db
+
