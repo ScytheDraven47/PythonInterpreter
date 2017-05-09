@@ -7,11 +7,11 @@ from views.view import IView
 
 
 class ConsoleView(IView):
-    def get_data(self, message):
+    def get_data(self, query):
         """Returns raw user input"""
-        result = input("{}: ".format(message))
+        result = input("{}: ".format(query))
         return result
 
-    def output(self, message, optional=None):
+    def output(self, message):
         """Prints message"""
         print(message)

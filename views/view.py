@@ -12,5 +12,5 @@ class IView(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def output(self, message, optional):
+    def output(self, message):
         pass
